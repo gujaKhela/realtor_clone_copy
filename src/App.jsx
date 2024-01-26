@@ -1,4 +1,4 @@
-import {Home} from "./pages/Home";
+import { Home } from "./pages/Home";
 import { ForgotPassword } from "./pages/ForgotPassword";
 import { Offers } from "./pages/Offers";
 import { Profile } from "./pages/Profile";
@@ -6,10 +6,12 @@ import { SignIn } from "./pages/SignIn";
 import { SignUp } from "./pages/SignUp";
 import { _404 } from "./_404";
 import { Routes, Route } from "react-router-dom";
+import { Header } from "./components/Header";
 
 function App() {
   return (
     <>
+      <Header />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/profile" element={<Profile />} />
