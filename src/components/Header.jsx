@@ -28,7 +28,7 @@ export const Header = () => {
           <ul className="flex space-x-9">
             <li
              className={"cursor-pointer py-3 text-sm font-semibold  " +
-             (matchPathName("/") ? "text-black border-b-[3px] border-b-red-500" : "text-gray-400 border-b-[3px] border-b-transparent")
+             (matchPathName("/") ? "text-black border-b-[3px] border-b-red-500" : "text-gray-400 ")
            }
            
               onClick={() => navigate("/")}
@@ -38,14 +38,14 @@ export const Header = () => {
 
             <li
               className={"cursor-pointer py-3 text-sm font-semibold  " +
-              (matchPathName("/offers") ? "text-black border-b-[3px] border-b-red-500" : "text-gray-400 border-b-[3px] border-b-transparent")}
+              (matchPathName("/offers") ? "text-black border-b-[3px] border-b-red-500" : "text-gray-400 ")}
               onClick={() => navigate("/offers")}
             >
               Offers
             </li>
             <li
               className={"cursor-pointer py-3 text-sm font-semibold  " +
-             (matchPathName("/sign-in") ? "text-black border-b-[3px] border-b-red-500" : "text-gray-400 border-b-[3px] border-b-transparent")}
+             (matchPathName("/sign-in") ? "text-black border-b-[3px] border-b-red-500" : "text-gray-400 ")}
               onClick={() => navigate("/sign-in")}
             >
               Sign In
