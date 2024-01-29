@@ -7,6 +7,8 @@ import { SignUp } from "./pages/SignUp";
 import { _404 } from "./_404";
 import { Routes, Route } from "react-router-dom";
 import { Header } from "./components/Header";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function App() {
   return (
@@ -21,6 +23,18 @@ function App() {
         <Route path="/offers" element={<Offers />} />
         <Route path="*" element={<_404 />} />
       </Routes>
+      <ToastContainer
+        position="bottom-center"
+        autoClose={4000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="dark"
+      />
     </>
   );
 }
