@@ -3,6 +3,9 @@ import imageKey from "../assets/maria-ziegler.webp";
 import { AiFillEyeInvisible, AiFillEye } from "react-icons/ai";
 import { Link } from "react-router-dom";
 import { OAuth } from "../components/OAuth";
+import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 export const SignIn = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -18,6 +21,24 @@ export const SignIn = () => {
       [e.target.id]: e.target.value,
     }));
   }
+  const navigate = useNavigate();
+
+  async function onSubmit(e) {
+    e.preventDefault();
+
+    try {
+      const auth = getAuth();
+      const result = await signInWithEmailAndPassword(auth, email, password);
+      if (result.user) {
+        navigate("/");
+        toast.success("welcome back!");
+      }
+    } catch (error) {
+      // console.log(error)
+      toast.error("something went wrong");
+    }
+  }
+
   return (
     <section>
       <h1 className="text-3xl text-center mt-6 font-bold">Sign In</h1>
@@ -27,7 +48,7 @@ export const SignIn = () => {
           <img src={imageKey} alt="key image" className="w-full rounded-2xl" />
         </div>
         <div className="w-full md:w-[67%] lg:w-[40%] lg:ml-20">
-          <form className="">
+          <form className="" onSubmit={onSubmit}>
             <input
               type="email"
               id="email"
@@ -78,11 +99,16 @@ export const SignIn = () => {
                 </Link>
               </p>
             </div>
-          <button type="submit" className="w-full bg-blue-600 text-white px-7 py-3 text-sm font-medium uppercase rounded shadow-md hover:bg-blue-700 transition duration-150 ease-in-out hover:shadow-md active:bg-blue-800">Sign In</button>
-          <div className="my-4 flex before:border-t before:flex-1 before:border-gray-300 items-center  after:border-t after:flex-1 after:border-gray-300">
-            <p className="text-center font-semibold mx-4">OR</p>
-          </div>
-          <OAuth />
+            <button
+              type="submit"
+              className="w-full bg-blue-600 text-white px-7 py-3 text-sm font-medium uppercase rounded shadow-md hover:bg-blue-700 transition duration-150 ease-in-out hover:shadow-md active:bg-blue-800"
+            >
+              Sign In
+            </button>
+            <div className="my-4 flex before:border-t before:flex-1 before:border-gray-300 items-center  after:border-t after:flex-1 after:border-gray-300">
+              <p className="text-center font-semibold mx-4">OR</p>
+            </div>
+            <OAuth />
           </form>
         </div>
       </div>
