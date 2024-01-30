@@ -1,14 +1,33 @@
 import React, { useState } from "react";
 import imageKey from "../assets/maria-ziegler.webp";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { OAuth } from "../components/OAuth";
+import { getAuth, sendPasswordResetEmail } from "firebase/auth";
+import { toast } from "react-toastify";
 
 export const ForgotPassword = () => {
   const [email, setEmail] = useState("");
 
+  const navigate = useNavigate();
+
   function onChange(e) {
     setEmail(e.target.value);
   }
+
+  async function onSubmit(e) {
+    e.preventDefault();
+
+    try {
+      const auth = getAuth();
+      const resp = await sendPasswordResetEmail(auth, email);
+      toast.success("sent reset email");
+      navigate("/");
+    } catch (error) {
+      console.log(error);
+      toast.error("something went wrong");
+    }
+  }
+
   return (
     <section>
       <h1 className="text-3xl text-center mt-6 font-bold">Forgot Password</h1>
@@ -18,7 +37,7 @@ export const ForgotPassword = () => {
           <img src={imageKey} alt="key image" className="w-full rounded-2xl" />
         </div>
         <div className="w-full md:w-[67%] lg:w-[40%] lg:ml-20">
-          <form className="">
+          <form className="" onSubmit={onSubmit}>
             <input
               type="email"
               id="email"
