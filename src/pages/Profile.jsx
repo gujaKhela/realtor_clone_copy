@@ -1,10 +1,13 @@
-import { getAuth } from "firebase/auth";
+import { getAuth, updateProfile } from "firebase/auth";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-
+import { toast } from "react-toastify";
+import { doc, updateDoc } from "firebase/firestore";
+import {db} from "../firebase.js";
 
 export const Profile = () => {
-  const navigate = useNavigate()
+  const [changeProfileDetails, setChangeProfileDetails] = useState(false);
+  const navigate = useNavigate();
   const auth = getAuth();
 
   const [formData, setFormData] = useState({
@@ -15,8 +18,37 @@ export const Profile = () => {
   const { name, email } = formData;
   function onLogOut() {
     auth.signOut();
-    navigate("/")
+    navigate("/");
   }
+
+  function onChange(e) {
+    setFormData((prevState) => ({
+      ...prevState,
+      [e.target.id]: e.target.value,
+    }));
+  }
+
+  async function onSubmit() {
+    try {
+      if (auth.currentUser.displayName != name) {
+        //change on firebase
+        await updateProfile(auth.currentUser, {
+          displayName: name,
+        });
+
+        //update on firestore
+        const docRef = doc(db, "users", auth.currentUser.uid);
+
+        await updateDoc(docRef, {
+          name,
+        });
+      }
+      toast.success("Update profile details succesful");
+    } catch (error) {
+      toast.error("Can not to change profile credentials");
+    }
+  }
+
   return (
     <section className="max-w-6xl mx-auto flex justify-center items-center flex-col">
       <h1 className="text-3xl font-bold text-center mt-6">My Profile</h1>
@@ -26,8 +58,11 @@ export const Profile = () => {
             type="text"
             id="name"
             value={name}
-            disabled
-            className="w-full text-xl p-4 text-gray-700 bg-white border-gray-300 rounded transition ease-in-out mt-6 "
+            disabled={!changeProfileDetails}
+            onChange={onChange}
+            className={`w-full text-xl p-4 text-gray-700 bg-white border-gray-300 rounded transition ease-in-out mt-6 ${
+              changeProfileDetails && "bg-red-200 focus:bg-red-200"
+            }`}
           />
           <input
             type="email"
@@ -40,8 +75,14 @@ export const Profile = () => {
           <div className="mt-6 flex justify-between text-sm sm:text-lg">
             <p className="">
               Do you want to change your name?
-              <span className="ml-2 text-red-600 hover:text-red-700 transition ease-in-out duration-200 cursor-pointer">
-                Edit
+              <span
+                onClick={() => {
+                  changeProfileDetails && onSubmit();
+                  setChangeProfileDetails((prev) => !prev);
+                }}
+                className={`ml-2 text-red-600 hover:text-red-700 transition ease-in-out duration-200 cursor-pointer `}
+              >
+                {changeProfileDetails ? "Apply Change" : "Edit"}
               </span>
             </p>
             <p
