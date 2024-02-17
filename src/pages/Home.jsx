@@ -1,3 +1,4 @@
+import { toast } from "react-toastify";
 
 export const Home = () => {
   return (
@@ -8,6 +9,7 @@ export const Home = () => {
         </a>
       </div>
       <h1>Vite + React</h1>
+      {toast.warning("still working on this project")}
     </>
   );
 };
