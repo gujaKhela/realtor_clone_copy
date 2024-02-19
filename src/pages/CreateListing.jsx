@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Spinner } from "../components/Spinner";
 import { toast } from "react-toastify";
 import { getAuth } from "firebase/auth";
@@ -8,13 +8,19 @@ import {
   uploadBytesResumable,
   getDownloadURL,
 } from "firebase/storage";
-import {addDoc, collection, serverTimestamp}from "firebase/firestore"
+import {
+  addDoc,
+  collection,
+
+  serverTimestamp,
+  
+} from "firebase/firestore";
 import { db } from "../firebase";
 import { v4 as uuidv4 } from "uuid";
 import { useNavigate } from "react-router-dom";
 
 export const CreateListing = () => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const auth = getAuth();
   const [geoLocationEnabled, setGeoLocationEnabled] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -171,8 +177,6 @@ export const CreateListing = () => {
       return;
     });
 
-
-
     const formDataCopy = {
       ...formData,
       imgUrls,
@@ -182,21 +186,22 @@ export const CreateListing = () => {
     };
 
     delete formDataCopy.images;
-    !formDataCopy.offer &&delete formDataCopy.discountedPrice
+    !formDataCopy.offer && delete formDataCopy.discountedPrice;
     delete formDataCopy.latitude;
     delete formDataCopy.longtitude;
 
-    
-    const docRef = await addDoc(collection(db,"listings"),formDataCopy)
+    const docRef = await addDoc(collection(db, "listings"), formDataCopy);
     setLoading(false);
     toast.success("listing created");
-    navigate(`/category/${formDataCopy.type}/${docRef.id}`)
+    navigate(`/category/${formDataCopy.type}/${docRef.id}`);
     // console.log(imgUrls);
   }
 
   if (loading) {
     return <Spinner />;
   }
+
+
 
   return (
     <main className="max-w-md px-2 mx-auto">
