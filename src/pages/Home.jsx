@@ -1,6 +1,10 @@
 import { toast } from "react-toastify";
+import { useEffect } from "react";
 
 export const Home = () => {
+  useEffect(() => {
+    toast.warning("still working on this PROJECT!");
+  }, []);
   return (
     <>
       <div>
@@ -9,7 +13,6 @@ export const Home = () => {
         </a>
       </div>
       <h1>Vite + React</h1>
-      {toast.warning("still working on this PROJECT!")}
     </>
   );
 };
