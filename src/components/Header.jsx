@@ -34,7 +34,7 @@ export const Header = () => {
         <div>
           <img
             src={siteLogo}
-            alt="logo of site"
+            alt="My logo of site "
             className={"h-5 cursor-pointer"}
             onClick={() => navigate("/")}
           />

@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { formatTimestamp } from "./Moment/MyMOment";
+import { formatTimestamp } from "./Moment/MyMoment";
 import { MdLocationOn } from "react-icons/md";
 import { MdEdit } from "react-icons/md";
 import { FaTrash } from "react-icons/fa";
