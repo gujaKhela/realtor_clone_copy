@@ -115,6 +115,8 @@ export const CreateListing = () => {
       const response = await fetch(apiUrl);
       const data = await response.json();
 
+      // console.log(data, "dattttttttttttttt")
+
       geoLocation.lat = data.features?.[0]?.geometry?.coordinates[1] ?? 0;
       geoLocation.lng = data.features?.[0]?.geometry?.coordinates[0] ?? 0;
 

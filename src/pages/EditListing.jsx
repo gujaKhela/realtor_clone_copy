@@ -24,7 +24,7 @@ import { useEffect } from "react";
 export default function EditListing() {
   const navigate = useNavigate();
   const auth = getAuth();
-  const [geolocationEnabled, setGeolocationEnabled] = useState(true);
+  const [geoLocationEnabled, setGeoLocationEnabled] = useState(false);
   const [loading, setLoading] = useState(false);
   const [listing, setListing] = useState(null);
   const [formData, setFormData] = useState({
@@ -39,8 +39,8 @@ export default function EditListing() {
     offer: false,
     regularPrice: 0,
     discountedPrice: 0,
-    latitude: 0,
-    longitude: 0,
+    latitude: undefined,
+    longitude: undefined,
     images: {},
   });
   const {
@@ -122,27 +122,31 @@ export default function EditListing() {
       toast.error("maximum 6 images are allowed");
       return;
     }
-    let geolocation = {};
+    let geoLocation = {};
     let location;
-    if (geolocationEnabled) {
-      const response = await fetch(
-        `https://maps.googleapis.com/maps/api/geocode/json?address=${address}&key=${process.env.REACT_APP_GEOCODE_API_KEY}`
-      );
+    if (!geoLocationEnabled) {
+      const encodedAddress = encodeURIComponent(address);
+
+      const apiUrl = `https://api.mapbox.com/search/searchbox/v1/forward?q=${encodedAddress}&language=en&limit=1&access_token=${
+        import.meta.env.VITE_API_GEOLOCATION
+      }`;
+
+      const response = await fetch(apiUrl);
       const data = await response.json();
-      console.log(data);
-      geolocation.lat = data.results[0]?.geometry.location.lat ?? 0;
-      geolocation.lng = data.results[0]?.geometry.location.lng ?? 0;
 
-      location = data.status === "ZERO_RESULTS" && undefined;
+      geoLocation.lat = data.features?.[0]?.geometry?.coordinates[1] ?? 0;
+      geoLocation.lng = data.features?.[0]?.geometry?.coordinates[0] ?? 0;
 
-      if (location === undefined) {
+      location = data.features.length == 0 && undefined;
+
+      if (location === undefined || null) {
         setLoading(false);
-        toast.error("please enter a correct address");
+        toast.error("Please enter a correct address");
         return;
       }
     } else {
-      geolocation.lat = latitude;
-      geolocation.lng = longitude;
+      geoLocation.lat = latitude;
+      geoLocation.lng = longitude;
     }
 
     async function storeImage(image) {
@@ -194,7 +198,7 @@ export default function EditListing() {
     const formDataCopy = {
       ...formData,
       imgUrls,
-      geolocation,
+      geoLocation,
       timestamp: serverTimestamp(),
       userRef: auth.currentUser.uid,
     };
@@ -346,7 +350,7 @@ export default function EditListing() {
           required
           className="w-full px-4 py-2 text-xl text-gray-700 bg-white border border-gray-300 rounded transition duration-150 ease-in-out focus:text-gray-700 focus:bg-white focus:border-slate-600 mb-6"
         />
-        {!geolocationEnabled && (
+        {geoLocationEnabled && (
           <div className="flex space-x-6 justify-start mb-6">
             <div className="">
               <p className="text-lg font-semibold">Latitude</p>
