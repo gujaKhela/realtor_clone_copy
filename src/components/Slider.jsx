@@ -31,7 +31,7 @@ export const Slider = () => {
 
       setListings(listing);
       setLoading(false);
-      console.log(listings);
+      // console.log(listings);
     }
 
     fetchLiSting();

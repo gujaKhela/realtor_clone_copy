@@ -37,8 +37,8 @@ export default function Listing() {
     return <Spinner />;
   }
 
-  console.log(listing.geoLocation.lat);
-  console.log(listing.geoLocation.lng);
+  // console.log(listing.geoLocation.lat);
+  // console.log(listing.geoLocation.lng);
   return (
     <main>
       <swiper-container

@@ -36,7 +36,7 @@ export const Home = () => {
         });
 
         setOfferListings(listing);
-        console.log(offerListings);
+        // console.log(offerListings);
       } catch (error) {
         console.log(error);
       }
@@ -68,7 +68,7 @@ export const Home = () => {
         });
 
         setRentListings(listing);
-        console.log(rentListings);
+        // console.log(rentListings);
       } catch (error) {
         console.log(error);
       }
@@ -99,7 +99,7 @@ export const Home = () => {
         });
 
         setSaleListings(listing);
-        console.log(rentListings);
+        // console.log(rentListings);
       } catch (error) {
         console.log(error);
       }
