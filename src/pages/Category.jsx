@@ -84,7 +84,9 @@ export const Category = () => {
 
   return (
     <div className="max-w-6xl mx-auto px-3">
-      <h1 className="text-3xl text-center my-6 font-bold">{params.categoryName == "rent"? "Places for rent":"Places for sale"}</h1>
+      <h1 className="text-3xl text-center my-6 font-bold">
+        {params.categoryName == "rent" ? "Places for rent" : "Places for sale"}
+      </h1>
       {loading ? (
         <Spinner />
       ) : listings && listings.length > 0 ? (
@@ -112,7 +114,12 @@ export const Category = () => {
           )}
         </>
       ) : (
-        <p>There are no current offers</p>
+        <p>
+          There are no current{" "}
+          {params.categoryName == "rent"
+            ? "places for rent"
+            : "places for sale"}
+        </p>
       )}
     </div>
   );
